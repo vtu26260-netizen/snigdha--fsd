@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - StreamSphere</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">StreamSphere</div>
+</header>
+
+<div class="container slide-up">
+    <h2>Create Account</h2>
+
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+
+    <button onclick="register()">Register</button>
+
+    <p>Already have account? 
+        <a href="login.html" style="color:red;">Login</a>
+    </p>
+</div>
+
+<script>
+function register() {
+    fetch("http://localhost:8081/api/signup", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            username: document.getElementById("user").value,
+            password: document.getElementById("pass").value
+        })
+    })
+    .then(res => res.json())
+    .then(() => {
+        alert("Registration Successful!");
+        window.location = "login.html";
+    });
+}
+</script>
+
+</body>
+</html>

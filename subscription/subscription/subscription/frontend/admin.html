@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    background: #141414;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Admin Dashboard</h2>
+<link rel="stylesheet" href="style.css">
+<button onclick="loadUsers()">Load Users</button>
+
+<ul id="list"></ul>
+
+<script>
+function loadUsers() {
+    fetch("http://localhost:8081/api/users")
+    .then(res => res.json())
+    .then(data => {
+        let list = document.getElementById("list");
+        list.innerHTML = "";
+
+        data.forEach(u => {
+            let li = document.createElement("li");
+            li.innerText = u.username + " - " + u.plan;
+            list.appendChild(li);
+        });
+    });
+}
+</script>
+
+</body>
+</html>

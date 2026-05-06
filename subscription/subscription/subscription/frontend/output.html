@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container slide-up">
+    <h2>Subscription Successful 🎉</h2>
+
+    <h3 id="user"></h3>
+    <h4 id="plan"></h4>
+
+    <button onclick="goHome()">Go to Dashboard</button>
+</div>
+
+<script>
+let user = localStorage.getItem("user");
+let plan = localStorage.getItem("selectedPlan");
+
+document.getElementById("user").innerText = "User: " + user;
+document.getElementById("plan").innerText = "Plan: " + plan;
+
+function goHome() {
+    window.location = "dashboard.html";
+}
+</script>
+
+</body>
+</html>

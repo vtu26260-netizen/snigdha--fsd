@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">StreamSphere</div>
+    <button onclick="logout()">Logout</button>
+</header>
+
+<div class="container slide-up">
+    <h2>User Profile</h2>
+
+    <h3 id="username"></h3>
+    <h4 id="plan"></h4>
+
+    <button onclick="goDashboard()">Back to Dashboard</button>
+</div>
+
+<script>
+let user = localStorage.getItem("user");
+
+if(!user) {
+    window.location = "login.html";
+}
+
+fetch("http://localhost:8081/api/profile/" + user)
+.then(res => res.json())
+.then(data => {
+    document.getElementById("username").innerText = "Username: " + data.username;
+    document.getElementById("plan").innerText = "Plan: " + (data.plan || "Not Subscribed");
+});
+
+function goDashboard() {
+    window.location = "dashboard.html";
+}
+
+function logout() {
+    localStorage.clear();
+    window.location = "login.html";
+}
+</script>
+
+</body>
+</html>

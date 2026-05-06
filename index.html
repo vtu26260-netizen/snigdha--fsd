@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Campus Event Management System</title>
+<style>
+
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #d9ecf7; /* light blue */
+}
+
+/* CENTER CARD */
+.container {
+    width: 400px;
+    margin: 80px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* INPUTS */
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* BUTTON */
+button {
+    background: #0b3d91; /* dark blue */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    width: 200px;
+    height: 100%;
+    background: #0b3d91;
+    color: white;
+    padding-top: 20px;
+    display: none;
+}
+
+.sidebar div {
+    padding: 15px;
+    cursor: pointer;
+}
+
+.sidebar div:hover {
+    background: #08306b;
+}
+
+/* DASHBOARD */
+.dashboard {
+    margin-left: 210px;
+    padding: 20px;
+    display: none;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* EVENTS */
+.event-box {
+    background: white;
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.event {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- REGISTER -->
+<div class="container" id="registerPage">
+    <h2>Smart Campus Event Management System</h2>
+    <p>Register to see events</p>
+
+    <input type="text" id="name" placeholder="Your Name">
+    <input type="email" id="email" placeholder="name@college.edu">
+
+    <button onclick="register()">Register</button>
+</div>
+
+<!-- LOGIN -->
+<div class="container" id="loginPage" style="display:none;">
+    <h2>Login</h2>
+    <input type="text" id="loginName" placeholder="Enter Name">
+    <button onclick="login()">Login</button>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <div>🏠 Dashboard</div>
+    <div>⚙️ Settings</div>
+    <div>👤 Profile</div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+    <h2>Dashboard</h2>
+
+    <div class="cards">
+        <div class="card">
+            <h3 id="eventsCount">0</h3>
+            <p>Upcoming Events</p>
+        </div>
+
+        <div class="card">
+            <h3 id="registrants">0</h3>
+            <p>Registrants</p>
+        </div>
+
+        <div class="card">
+            <h3>11%</h3>
+            <p>Facility Usage</p>
+        </div>
+
+        <div class="card">
+            <h3>$0</h3>
+            <p>Event Revenue</p>
+        </div>
+    </div>
+
+    <!-- ADD EVENT -->
+    <div class="event-box">
+        <h3>Add Event</h3>
+        <input type="text" id="eventName" placeholder="Event Name">
+        <button onclick="addEvent()">Add</button>
+    </div>
+
+    <!-- EVENT LIST -->
+    <div class="event-box">
+        <h3>Pending Events</h3>
+        <div id="eventList"></div>
+    </div>
+
+</div>
+
+<script>
+
+let users = [];
+let events = [];
+
+/* REGISTER */
+function register() {
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+
+    if(name && email){
+        users.push(name);
+        alert("Registered! Please login.");
+        document.getElementById("registerPage").style.display = "none";
+        document.getElementById("loginPage").style.display = "block";
+    }
+}
+
+/* LOGIN */
+function login() {
+    let name = document.getElementById("loginName").value;
+
+    if(users.includes(name)){
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("sidebar").style.display = "block";
+        document.getElementById("dashboard").style.display = "block";
+        updateStats();
+    } else {
+        alert("User not found. Register first.");
+    }
+}
+
+/* ADD EVENT */
+function addEvent() {
+    let eventName = document.getElementById("eventName").value;
+    if(eventName){
+        events.push({name: eventName, status: "pending"});
+        renderEvents();
+        updateStats();
+    }
+}
+
+/* RENDER EVENTS */
+function renderEvents(){
+    let list = document.getElementById("eventList");
+    list.innerHTML = "";
+
+    events.forEach((e, index) => {
+        let div = document.createElement("div");
+        div.className = "event";
+
+        div.innerHTML = `
+            ${e.name} (${e.status})
+            <div>
+                <button onclick="approve(${index})">Approve</button>
+                <button onclick="deny(${index})">Deny</button>
+                <button onclick="deleteEvent(${index})">Delete</button>
+            </div>
+        `;
+
+        list.appendChild(div);
+    });
+}
+
+/* ACTIONS */
+function approve(i){
+    events[i].status = "approved";
+    renderEvents();
+}
+
+function deny(i){
+    events[i].status = "denied";
+    renderEvents();
+}
+
+function deleteEvent(i){
+    events.splice(i,1);
+    renderEvents();
+    updateStats();
+}
+
+/* UPDATE STATS */
+function updateStats(){
+    document.getElementById("eventsCount").innerText = events.length;
+    document.getElementById("registrants").innerText = users.length;
+}
+
+</script>
+
+</body>
+</html>

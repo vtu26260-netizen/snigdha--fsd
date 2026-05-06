@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    background: #141414;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}
+
+.container {
+    margin-top: 100px;
+}
+
+input {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 250px;
+}
+
+button {
+    background: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+<link rel="stylesheet" href="style.css">
+<div class="container slide-up">
+    <h2>Login</h2>
+
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+</div>
+
+<script>
+function login() {
+    fetch("http://localhost:8081/api/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            username: user.value,
+            password: pass.value
+        })
+    })
+    .then(res => res.text())
+    .then(data => {
+        if(data === "SUCCESS") {
+            localStorage.setItem("user", user.value);
+            window.location = "dashboard.html";
+        } else {
+            alert("Invalid login");
+        }
+    });
+}
+</script>
+
+</body>
+</html>
+<script>
+function login() {
+    fetch("http://localhost:8081/api/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            username: document.getElementById("user").value,
+            password: document.getElementById("pass").value
+        })
+    })
+    .then(res => res.text())
+    .then(data => {
+        if(data === "SUCCESS") {
+            localStorage.setItem("user", document.getElementById("user").value);
+            window.location = "dashboard.html";
+        } else {
+            alert("Invalid login");
+        }
+    });
+}
+</script>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MyFlix</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- 🔝 NAVBAR -->
+<header>
+    <div class="logo">StreamSphere</div>
+    <div>
+        <button onclick="window.location='profile.html'">Profile</button>
+        <button onclick="goToAdmin()">Admin</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+</header>
+
+<!-- 🎬 HERO BANNER -->
+<div class="banner  fade-in">
+    <h1>Unlimited Movies, TV Shows and More</h1>
+    <p id="welcome"></p>
+    <p id="plan"></p>
+</div>
+
+<!-- 🎯 SUBSCRIPTION PLANS -->
+<h2 class="section-title">Choose Your Plan</h2>
+
+<div class="cards slide-up">
+    <div class="card slide-up">
+        <h3>Basic</h3>
+        <p>₹0</p>
+        <button onclick="goToPayment('Basic')">Choose</button>
+    </div>
+
+    <div class="card slide-up">
+        <h3>Premium</h3>
+        <p>₹199</p>
+        <button onclick="goToPayment('Premium')">Choose</button>
+    </div>
+
+    <div class="card slide-up">
+        <h3>Pro</h3>
+        <p>₹499</p>
+        <button onclick="goToPayment('Pro')">Choose</button>
+    </div>
+</div>
+
+<!-- 🎥 MOVIE ROW -->
+<h2 class="section-title">Trending Now</h2>
+
+<div class="movies slide-up">
+    <img src="https://via.placeholder.com/200x120">
+    <img src="https://via.placeholder.com/200x120">
+    <img src="https://via.placeholder.com/200x120">
+    <img src="https://via.placeholder.com/200x120">
+</div>
+
+<script>
+window.onload = function () {
+    let user = localStorage.getItem("user");
+
+    document.getElementById("welcome").innerText = "Welcome " + user;
+
+    fetch("http://localhost:8081/api/users")
+    .then(res => res.json())
+    .then(data => {
+        let current = data.find(u => u.username === user);
+
+        if (current) {
+            document.getElementById("plan").innerText =
+                "Plan: " + (current.plan || "Not Subscribed");
+        }
+    });
+};
+
+function goToPayment(plan) {
+    localStorage.setItem("selectedPlan", plan);
+    window.location = "payment.html";
+}
+
+function logout() {
+    localStorage.removeItem("user");
+    window.location = "login.html";
+}
+
+function goToAdmin() {
+    window.location = "admin.html";
+}
+</script>
+
+</body>
+</html>
+<script>
+window.onload = function () {
+    let user = localStorage.getItem("user");
+
+    document.getElementById("welcome").innerText = "Welcome " + user;
+
+    fetch("http://localhost:8081/api/users")
+    .then(res => res.json())
+    .then(data => {
+        let current = data.find(u => u.username === user);
+
+        if (current) {
+            document.getElementById("plan").innerText =
+                "Plan: " + (current.plan || "Not Subscribed");
+        }
+    });
+};
+
+function goToPayment(plan) {
+    localStorage.setItem("selectedPlan", plan);
+    window.location = "payment.html";
+}
+
+function logout() {
+    localStorage.removeItem("user");
+    window.location = "login.html";
+}
+
+function goToAdmin() {
+    window.location = "admin.html";
+}
+</script>

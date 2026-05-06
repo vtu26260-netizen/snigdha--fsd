@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="loader" id="loader" style="display:none;"></div>
+<div class="container slide-up">
+    <h2>Payment</h2>
+    <p id="plan"></p>
+
+    <input placeholder="Card Number">
+    <input placeholder="CVV">
+
+    <button onclick="pay()">Pay Now</button>
+</div>
+
+<script>
+let plan = localStorage.getItem("selectedPlan");
+document.getElementById("plan").innerText = "Plan: " + plan;
+
+function pay() {
+    document.getElementById("loader").style.display = "block";
+
+    setTimeout(() => {
+        fetch("http://localhost:8081/api/subscribe", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                username: localStorage.getItem("user"),
+                plan: plan
+            })
+        })
+        .then(res => res.json())
+        .then(() => {
+            alert("Payment Successful!");
+            window.location = "output.html";
+        });
+    }, 1500);
+}
+</script>
+
+</body>
+</html>
